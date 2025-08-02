@@ -1,0 +1,60 @@
+/* Global styles to ensure proper scrolling */
+html, body {
+  overflow-y: hidden !important;
+  height: 100vh !important;
+}
+
+/* Only apply overflow hidden to landing page */
+body.landing-page-active {
+  overflow: hidden;
+}
+
+/* Add these at the top of your CSS file */
+@media (forced-colors: active) {
+  /* Styles for forced colors mode */
+  .btn-primary {
+    forced-color-adjust: none;
+    background-color: ButtonText;
+    color: ButtonFace;
+  }
+
+  .form-control {
+    forced-color-adjust: none;
+    background-color: Field;
+    color: FieldText;
+  }
+
+  .card {
+    forced-color-adjust: none;
+    background-color: Canvas;
+    color: CanvasText;
+  }
+}
+
+/* Remove any instances of -ms-high-contrast */
+/* Replace with modern alternatives */
+@media screen and (prefers-contrast: more) {
+  .btn-primary {
+    border: 2px solid currentColor;
+  }
+
+  .form-control {
+    border: 2px solid currentColor;
+  }
+
+  .card {
+    border: 2px solid currentColor;
+  }
+}
+
+.animated-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.main-content {
+  margin-top: 100px;
+}
+
+/* ... rest of your existing CSS ... */ 
