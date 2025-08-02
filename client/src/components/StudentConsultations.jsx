@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { mockAPI, mockData } from '../utils/mockData';
 import { Modal, Button } from 'react-bootstrap';
 
 // Import FontAwesomeIcon component
@@ -1970,52 +1971,38 @@ const StudentConsultations = () => {
         navigate('/login');
         return;
       }
-      // Fetch faculty data with subjects and schedules
-      const response = await axios.get('http://localhost:5000/api/faculty-with-subjects', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      if (response.data && Array.isArray(response.data)) {
-        // Transform the data to match the expected format
-        const formattedFaculty = await Promise.all(response.data.map(async f => {
-          // Fetch schedules for each faculty
-          const schedulesResponse = await axios.get('http://localhost:5000/api/schedules', {
-            params: { facultyId: f._id },
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          return {
-            _id: f._id,
-            name: f.name,
-            email: f.email,
-            school_id: f.school_id,
-            department: f.department,
-            contact_number: f.contact_number,
-            subjects: f.subjects || [],
-            schedules: schedulesResponse.data || []
-          };
-        }));
-        setFaculty(formattedFaculty);
-        setSortedFaculty(formattedFaculty);
-      } else {
-        throw new Error('Invalid faculty data format');
-      }
+      
+      // Use mock data instead of real API
+      const facultyData = mockData.faculty.map(f => ({
+        _id: f.id,
+        name: f.name,
+        email: f.email,
+        school_id: f.id,
+        department: f.department,
+        contact_number: 'N/A',
+        subjects: f.subjects,
+        schedules: f.schedule.map(s => ({
+          _id: `${f.id}-${s.day}`,
+          day: s.day,
+          time: s.time,
+          location: s.location,
+          subjectId: f.subjects[0]
+        }))
+      }));
+      
+      setFaculty(facultyData);
+      setSortedFaculty(facultyData);
     } catch (error) {
       console.error('Error fetching faculty data:', error);
-      if (error.response?.status === 401) {
-        navigate('/login');
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: error.response?.data?.message || 'Failed to fetch faculty data. Please try again later.',
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 3000
-        });
-      }
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to fetch faculty data. Please try again later.',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      });
     } finally {
       setLoading(false);
     }
@@ -2118,18 +2105,11 @@ const StudentConsultations = () => {
           return;
         }
 
-        const response = await axios.get(
-          `http://localhost:5000/api/consultations/student/${userData.id}`,
-          {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          }
-        );
-
+        // Use mock data instead of real API
+        const newConsultations = mockData.consultations.filter(c => c.studentId === userData.id);
+        
         // Compare previous and new consultations for status changes
         const prevConsultations = prevConsultationsRef.current;
-        const newConsultations = response.data;
         // Only run notification logic if prevConsultations is not empty (not first load)
         if (prevConsultations.length > 0) {
           newConsultations.forEach(newC => {

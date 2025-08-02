@@ -7,6 +7,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { AuthContext } from '../contexts/AuthContext'; // Import AuthContext
 import { useLocation, useNavigate } from 'react-router-dom'; // Import useLocation and useNavigate
 import Swal from 'sweetalert2';
+import { mockAPI } from '../utils/mockData'; // Import mock API
 
 DataTable.use(DT);
 const AuthLoginBasic = () => {
@@ -148,9 +149,10 @@ const AuthLoginBasic = () => {
 
       console.log('Sending request data:', requestData);
       
-      const response = await axios.post('http://localhost:5000/api/auth/login', requestData);
+      // Use mock API instead of real backend
+      const response = await mockAPI.login(requestData);
 
-      const { token, user } = response.data;
+      const { token, user } = response;
       console.log('Login successful, user role:', user.role);
       
       // Store user data and token
