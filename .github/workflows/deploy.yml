@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -27,15 +27,26 @@ jobs:
         submodules: false
         fetch-depth: 1
         
-    - name: Clean submodule references
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: client/package-lock.json
+        
+    - name: Install dependencies
       run: |
-        git config --remove-section submodule.20241_T172_FACULTY-CONSULTATION-SYSTEM 2>/dev/null || true
-        git config --remove-section submodule.20241_T172_FACULTY-CONSULTATION-SYSTEM 2>/dev/null || true
-      
+        cd client
+        npm ci
+        
+    - name: Build
+      run: |
+        cd client
+        npm run build
+        
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       id: deployment
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./
-        publish_branch: gh-pages 
+        publish_dir: ./client/dist 
