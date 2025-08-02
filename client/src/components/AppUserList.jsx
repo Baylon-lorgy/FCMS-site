@@ -915,13 +915,14 @@ type="submit" className="btn btn-primary mb-3" onClick={handleOpenAddModal} >   
                 />
               </div>
             </div>
-            <ReCAPTCHA
+            {/* ReCAPTCHA disabled for GitHub Pages deployment */}
+            {/* <ReCAPTCHA
               sitekey="6Lc8M1crAAAAAEmcoJJmlWSo5dR1ndpF1WINoYIS"
               onChange={token => {
                 setRecaptchaToken(token);
                 console.log('reCAPTCHA token:', token);
               }}
-            />
+            /> */}
             <button type="submit" className="btn btn-primary">Manage Student</button>
           </form>
         </div>

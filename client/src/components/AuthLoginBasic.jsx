@@ -18,8 +18,8 @@ const AuthLoginBasic = () => {
   const [isVerified, setIsVerified] = useState(false); // State for reCAPTCHA verification
   const [captchaToken, setCaptchaToken] = useState(''); // State for reCAPTCHA token
   // State for reCAPTCHA
-  const [showCaptcha, setShowCaptcha] = useState(true); // Always show reCAPTCHA
-  const [skipCaptcha, setSkipCaptcha] = useState(false); // Add skipCaptcha state
+  const [showCaptcha, setShowCaptcha] = useState(false); // Disable reCAPTCHA for GitHub Pages
+  const [skipCaptcha, setSkipCaptcha] = useState(true); // Skip reCAPTCHA by default
   const [isLoading, setIsLoading] = useState(false);
   const { setIsAuthenticated, setUserRole } = useContext(AuthContext);
   const navigate = useNavigate();

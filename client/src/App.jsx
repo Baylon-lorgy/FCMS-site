@@ -122,7 +122,7 @@ const App = () => {
       onScriptLoadError={() => console.error('Failed to load Google Sign-In script')}
       onScriptLoadSuccess={() => console.log('Google Sign-In script loaded successfully')}
     >
-      <Router>
+      <Router basename="/FCMS-site">
         <AuthProvider>
           <Routes>
             <Route path="/" element={<LandingPage />} />
